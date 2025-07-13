@@ -3,7 +3,7 @@
   /* 定义字体名称，可在后续CSS中使用该名称引用此字体 */
   font-family: 'myFont';
   /* 指定字体文件的URL和格式，使用woff2格式提高加载速度 */
-  src: url('../fonts/1.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/LuvGaze/CDN@1.0/Web%20directory/fonts/1.woff2') format('woff2');
   /* 设置字体显示策略为swap，在字体加载前使用后备字体，加载后再替换，提高页面渲染速度 */
   font-display: swap;
 }
