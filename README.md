@@ -1,4 +1,4 @@
 # 调用url：
 ```
-https://cdn.jsdelivr.net/LuvGaze/CDN@发布的版本号/文件路径
+https://cdn.jsdelivr.net/gh/LuvGaze/Resources/CDN@1.0/文件路径
 ```
