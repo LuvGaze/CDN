@@ -1,0 +1,640 @@
+/* 自定义字体 - 定义网站使用的特殊字体 */
+@font-face {
+  /* 定义字体名称，可在后续CSS中使用该名称引用此字体 */
+  font-family: 'myFont';
+  /* 指定字体文件的URL和格式，使用woff2格式提高加载速度 */
+  src: url('https://cdn.jsdelivr.net/gh/LuvGaze/Resources@1.0/fonts/1.woff2') format('woff2');
+  /* 设置字体显示策略为swap，在字体加载前使用后备字体，加载后再替换，提高页面渲染速度 */
+  font-display: swap;
+}
+
+
+/* 基础变量 - 定义全站使用的CSS变量，便于统一管理和主题切换 */
+:root {
+  /* 深色背景色，用于页面背景 */
+  --bg-dark: #1c1c1c;
+  /* 主要文本颜色，使用90%不透明度的白色，提高可读性同时保持柔和 */
+  --text-primary: rgba(255, 255, 255, 0.9);
+  /* 次要文本颜色，使用60%不透明度的白色，用于辅助信息 */
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  /* 卡片背景色，使用95%不透明度的深灰色，保持一定透明度以展示背景 */
+  --card-bg: rgba(40, 40, 40, 0.95);
+  /* 悬停背景色，用于交互元素的悬停状态 */
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  /* 夜间模式背景图片路径 */
+  --bg-image-night: url('https://cdn.jsdelivr.net/gh/LuvGaze/CDN@1.0/Web%20directory/img/night.jpg');
+  /* 日间模式背景图片路径 */
+  --bg-image-day: url('https://cdn.jsdelivr.net/gh/LuvGaze/CDN@1.0/Web%20directory/img/day.jpg');
+  /* 过渡动画时间，用于所有动画效果，保持一致的过渡体验 */
+  --transition-time: 0.3s;
+}
+
+/* 全局重置样式 - 应用于所有元素 */
+* {
+  /* 移除所有元素的外边距，确保布局一致性 */
+  margin: 0;
+  /* 移除所有元素的内边距，确保布局一致性 */
+  padding: 0;
+  /* 将盒模型设置为border-box，使元素的宽高包含padding和border，便于布局计算 */
+  box-sizing: border-box;
+}
+
+/* 页面主体样式 */
+body {
+  /* 设置字体族，优先使用自定义字体，依次降级到系统字体 */
+  font-family: "myFont", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* 设置最小高度为视口高度，确保即使内容少也能填满屏幕 */
+  min-height: 100vh;
+  /* 设置背景色和背景图片，使用CSS变量便于主题切换 */
+  /* center/cover确保背景图片居中且覆盖整个区域，no-repeat防止图片重复，fixed使背景固定不随滚动 */
+  background: var(--bg-dark) var(--bg-image-night) center/cover no-repeat fixed;
+  /* 设置文本颜色，使用CSS变量 */
+  color: var(--text-primary);
+  /* 设置背景色和背景图片的过渡效果，使主题切换平滑 */
+  transition: 
+    background-color var(--transition-time) ease,
+    background-image var(--transition-time) ease;
+  /* 设置页面内边距，防止内容贴近浏览器边缘 */
+  padding: 20px;
+  /* 设置行高，提高文本可读性 */
+  line-height: 1.6;
+  /* 为绝对定位子元素提供参考点（可选） */
+  position: relative;
+  /* 确保 body 至少占满整个视口高度 */
+  min-height: 100vh;
+}
+
+/* 内容区块 - 定义卡片式内容容器的样式 */
+.content-block {
+  /* 设置相对定位，作为子元素定位的参考点 */
+  position: relative;
+  /* 设置背景色，使用CSS变量 */
+  background: var(--card-bg);
+  /* 添加背景模糊效果，增强视觉层次感和透明效果 */
+  backdrop-filter: blur(10px);
+  /* 为Safari浏览器添加前缀，确保跨浏览器兼容性 */
+  -webkit-backdrop-filter: blur(10px);
+  /* 设置圆角边框，使卡片更加圆润美观 */
+  border-radius: 40px;
+  /* 设置内边距，确保内容与边缘有适当距离 */
+  padding: 20px;
+  /* 设置上下外边距，确保卡片之间有适当间距 */
+  margin: 20px 0;
+  /* 添加阴影效果，增强立体感和层次感 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  /* 设置透明度和变换的过渡效果，使交互更加平滑 */
+  transition: 
+    opacity var(--transition-time) ease,
+    transform var(--transition-time) ease;
+  /* 设置默认透明度，使卡片看起来更加轻盈 */
+  opacity: 0.9;
+  /* 设置层叠顺序，确保卡片在正常状态下的层级 */
+  z-index: 1;
+}
+
+/* 内容区块悬停效果 */
+.content-block:hover {
+  /* 悬停时提高透明度，使卡片更加突出 */
+  opacity: 1;
+  /* 悬停时向上移动2像素，创造轻微的浮动效果 */
+  transform: translateY(-15px);
+  /* 提高悬停时的层叠顺序，确保悬停的卡片显示在其他卡片之上 */
+  z-index: 10;
+}
+
+/* 链接网格 - 定义分组容器的网格布局 */
+.groups-container {
+  /* 使用网格布局，实现响应式多列效果 */
+  display: grid;
+  /* 设置网格列模板，使用auto-fit自动适应容器宽度，每列最小宽度280px，最大宽度1fr（等分剩余空间） */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* 设置网格间距，控制卡片之间的空白 */
+  gap: 20px;
+  /* 设置顶部外边距，与页面顶部保持适当距离 */
+  margin-top: 20px;
+}
+
+/* 链接容器 - 定义每个分组内链接的网格布局 */
+.links {
+  /* 使用网格布局，实现链接项的多列排列 */
+  display: grid;
+  /* 设置网格列模板，使用auto-fill自动填充容器，每列最小宽度200px，最大宽度1fr */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* 设置网格间距，控制链接项之间的空白 */
+  gap: 1rem;
+  /* 设置相对定位，作为展开内容的定位参考 */
+  position: relative;
+}
+
+/* 默认只显示5个链接 - 隐藏第6个及之后的链接项 */
+.link-item:nth-child(n+6) {
+  /* 设置为不显示，实现默认折叠效果 */
+  display: none;
+}
+
+/* 链接项 - 定义每个链接的基本样式 */
+.link-item {
+  /* 使用弹性布局，便于图标和文本的对齐 */
+  display: flex;
+  /* 垂直居中对齐内容，使图标和文本在垂直方向上居中 */
+  align-items: center;
+  /* 设置内边距，提供足够的点击区域和视觉空间 */
+  padding: 12px;
+  /* 设置半透明背景，增加可读性同时保持视觉轻盈 */
+  background: rgba(255, 255, 255, 0.05);
+  /* 设置圆角边框，美化外观 */
+  border-radius: 8px;
+  /* 移除链接的下划线，保持美观 */
+  text-decoration: none;
+  /* 继承父元素的文本颜色，保持一致性 */
+  color: inherit;
+  /* 设置过渡效果，使交互更加平滑 */
+  transition: all var(--transition-time) ease;
+  /* 设置透明边框，防止悬停时布局跳动 */
+  border: 1px solid transparent;
+}
+
+/* 链接项悬停效果 */
+.link-item:hover {
+  /* 悬停时改变背景色，增强交互反馈 */
+  background: var(--hover-bg);
+  /* 悬停时向上移动3像素，创造轻微的浮动效果 */
+  transform: translateY(-3px);
+  /* 添加阴影效果，增强立体感和层次感 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* 链接图标样式 */
+.link-icon {
+  /* 设置图标宽度，保持一致的大小 */
+  width: 32px;
+  /* 设置图标高度，保持一致的大小 */
+  height: 32px;
+  /* 保持图标比例，确保完整显示不变形 */
+  object-fit: contain;
+  /* 设置右侧外边距，与文本保持适当距离 */
+  margin-right: 12px;
+  /* 设置圆角边框，美化外观 */
+  border-radius: 4px;
+  /* 防止图标被压缩，保持固定大小 */
+  flex-shrink: 0;
+}
+
+/* 链接文本容器样式 */
+.link-text {
+  /* 使用弹性布局，便于名称和描述的垂直排列 */
+  display: flex;
+  /* 设置垂直方向的排列，名称在上，描述在下 */
+  flex-direction: column;
+  /* 隐藏溢出内容，防止文本超出容器 */
+  overflow: hidden;
+}
+
+/* 链接名称样式 */
+.link-name {
+  /* 设置粗体字重，使名称更加突出 */
+  font-weight: bold;
+  /* 设置字体大小，保持适当比例 */
+  font-size: 1rem;
+  /* 防止文本换行，保持在一行内显示 */
+  white-space: nowrap;
+  /* 隐藏溢出内容，配合text-overflow使用 */
+  overflow: hidden;
+  /* 溢出时显示省略号，优化长文本的显示 */
+  text-overflow: ellipsis;
+}
+
+/* 链接描述样式 */
+.link-desc {
+  /* 设置字体大小，小于名称，区分层次 */
+  font-size: 0.85em;
+  /* 设置次要文本颜色，区分于名称 */
+  color: var(--text-secondary);
+  /* 设置顶部外边距，与名称保持适当距离 */
+  margin-top: 4px;
+}
+
+/* 展开/收起功能 - 定义展开/收起按钮的样式 */
+.expand-toggle {
+  /* 设置网格列跨度，使按钮占据整行 */
+  grid-column: 1 / -1;
+  /* 文本居中对齐，美观整齐 */
+  text-align: center;
+  /* 设置内边距，提供足够的点击区域 */
+  padding: 10px;
+  /* 设置半透明背景，与整体设计协调 */
+  background: rgba(255, 255, 255, 0.08);
+  /* 设置圆角边框，美化外观 */
+  border-radius: 8px;
+  /* 设置鼠标指针为手型，提示可点击 */
+  cursor: pointer;
+  /* 设置顶部外边距，与链接项保持适当距离 */
+  margin-top: 10px;
+  /* 设置过渡效果，使交互更加平滑 */
+  transition: all var(--transition-time) ease;
+  /* 设置字体大小，保持适当比例 */
+  font-size: 0.9em;
+  /* 设置次要文本颜色，区分于主要内容 */
+  color: var(--text-secondary);
+  /* 设置层叠顺序，确保按钮可点击 */
+  z-index: 5;
+}
+
+/* 展开/收起按钮悬停效果 */
+.expand-toggle:hover {
+  /* 悬停时背景色变深，增强交互反馈 */
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 展开按钮文本 */
+.expand-toggle::after {
+  /* 设置按钮文本内容，提示用户功能 */
+  content: "展开 ▽";
+  /* 设置粗体字重，增强可读性 */
+  font-weight: bold;
+}
+
+/* 收起按钮文本 - 展开状态下的按钮文本 */
+.links.expanded .expand-toggle::after {
+  /* 修改按钮文本内容，提示当前状态 */
+  content: "收起 △";
+}
+
+/* 展开状态 - 定义链接容器在展开状态下的样式 */
+.links.expanded {
+  /* 设置较高的层叠顺序，确保展开内容显示在上层 */
+  z-index: 20;
+}
+
+/* 展开状态下的链接项样式 */
+.links.expanded .link-item {
+  /* 强制显示所有链接项，包括默认隐藏的 */
+  display: flex !important;
+  /* 使用卡片背景色，保持视觉一致性 */
+  background: var(--card-bg);
+  /* 添加阴影效果，增强立体感 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 展开内容浮层 - 定义展开后显示的链接列表容器 */
+.expanded-content {
+  /* 设置绝对定位，相对于父容器定位 */
+  position: absolute;
+  /* 定位在父容器下方10px处 */
+  top: calc(100% + 10px);
+  /* 水平方向上占满父容器 */
+  left: 0;
+  right: 0;
+  /* 设置半透明背景，增强视觉层次感 */
+  background: rgba(30, 30, 30, 0.7);
+  /* 设置内边距，提供足够的内容空间 */
+  padding: 20px;
+  /* 设置底部圆角，美化外观 */
+  border-radius: 0 0 12px 12px;
+  /* 添加阴影效果，增强立体感 */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  /* 设置较高的层叠顺序，确保内容显示在最上层 */
+  z-index: 30;
+  /* 默认不显示，等待展开触发 */
+  display: none;
+  /* 使用网格布局，便于链接项的排列 */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* 设置网格间距，美化布局 */
+  gap: 1rem;
+  /* 设置最大高度，防止内容过多时超出屏幕 */
+  max-height: 60vh;
+  /* 设置垂直滚动条，当内容超出最大高度时可滚动 */
+  overflow-y: auto;
+  /* 添加淡入动画效果，增强用户体验 */
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.links.expanded .expanded-content {
+  display: grid;
+}
+
+/* 遮罩层 */
+/* 遮罩层 - 定义展开状态下的背景遮罩 */
+.overlay-mask {
+  /* 设置固定定位，相对于视口定位 */
+  position: fixed;
+  /* 定位在视口顶部 */
+  top: 0;
+  /* 定位在视口左侧 */
+  left: 0;
+  /* 宽度占满整个视口 */
+  width: 100%;
+  /* 高度占满整个视口 */
+  height: 100%;
+  /* 设置半透明黑色背景，创造遮罩效果 */
+  background: rgba(0, 0, 0, 0.5);
+  /* 设置适当的层叠顺序，低于展开内容但高于其他元素 */
+  z-index: 10;
+  /* 默认透明不可见 */
+  opacity: 0;
+  /* 默认不响应鼠标事件，点击事件会穿透到下层元素 */
+  pointer-events: none;
+  /* 设置过渡效果，使显示和隐藏更加平滑 */
+  transition: opacity var(--transition-time) ease;
+}
+
+/* 展开状态下的遮罩层 */
+.links.expanded .overlay-mask {
+  /* 设置为完全不透明，遮挡下层内容 */
+  opacity: 1;
+  /* 启用鼠标事件，可以通过点击遮罩关闭展开内容 */
+  pointer-events: auto;
+}
+
+/* 页头 - 定义页面顶部区域的样式 */
+header {
+  /* 设置最小高度为视口高度的30%，确保页头有足够的视觉空间 */
+  min-height: 30vh;
+  /* 使用弹性布局，便于内容居中对齐 */
+  display: flex;
+  /* 垂直居中对齐内容 */
+  align-items: center;
+  /* 水平居中对齐内容 */
+  justify-content: center;
+  /* 文本居中对齐，美观整齐 */
+  text-align: center;
+  /* 设置内边距，提供足够的内容空间 */
+  padding: 20px;
+}
+
+/* 主标题 - 定义页面主标题的样式 */
+h1 {
+  /* 设置字体大小，突出主标题 */
+  font-size: 2.5rem;
+  /* 设置底部上边距，与上方内容保持适当距离 */
+  margin-top: 12rem;
+  /* 设置底部下边距，与下方内容保持适当距离 */
+  margin-bottom: 1rem;
+  /* 添加文字阴影，增强可读性和视觉效果 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* 设置字体粗细，增强视觉重要性 */
+  font-weight: 600;
+  /* 缩放 */
+  transform:scale(1.5) translateY(-0%);
+}
+
+/* 当前公历时间字体的样式 */
+#currentDateTime {
+  /* 设置字体大小，突出主标题 */
+  font-size: 1.5rem;
+  /* 设置底部外边距，与下方内容保持适当距离 */
+  margin-bottom: 0rem;
+  /* 添加文字阴影，增强可读性和视觉效果 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* 设置字体粗细，增强视觉重要性 */
+  font-weight: 400;
+  /* 缩放 */
+  transform:scale(1.0) translateY(-0%);
+}
+
+/* 设置农历时间字体的样式 */
+#lunarDateTime {
+  /* 设置字体大小，突出主标题 */
+  font-size: 1.1rem;
+  /* 设置底部外边距，与下方内容保持适当距离 */
+  margin-bottom: 25rem;
+  /* 添加文字阴影，增强可读性和视觉效果 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* 设置字体粗细，增强视觉重要性 */
+  font-weight: 400;
+  /* 缩放 */
+  transform:scale(1.0) translateY(-0%);
+  /* 实现 \n 换行*/
+  white-space: pre-line; /* 或 white-space: pre-wrap */
+}
+
+#timeSpent {
+  /* 设置字体大小，突出主标题 */
+  font-size: 1.5rem;
+  /* 设置底部外边距，与下方内容保持适当距离 */
+  margin-bottom: 0rem;
+  /* 添加文字阴影，增强可读性和视觉效果 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* 设置字体粗细，增强视觉重要性 */
+  font-weight: 400;
+  /* 缩放 */
+  transform:scale(1.0) translateY(-0%);
+}
+
+/* 容器 - 定义内容容器的样式，用于控制页面宽度和居中 */
+.container {
+  /* 设置最大宽度，防止在大屏幕上内容过宽 */
+  max-width: 1200px;
+  /* 左右外边距设为auto，实现水平居中 */
+  margin: 0 auto;
+  /* 设置左右内边距，防止内容贴近屏幕边缘 */
+  padding: 0 20px;
+}
+
+/* 分组标题 - 定义每个分组的标题样式 */
+.group-title {
+  /* 设置字体大小，突出分组标题 */
+  font-size: 1.5rem;
+  /* 设置相对定位，用于添加装饰性下划线 */
+  position: relative;
+  /* 设置上下外边距，与周围内容保持适当距离 */
+  margin: 1rem 0;
+  /* 设置底部内边距，为下划线留出空间 */
+  padding-bottom: 8px;
+}
+
+/* 分组标题装饰线 - 使用伪元素创建标题下方的渐变装饰线 */
+.group-title::after {
+  /* 设置内容为空，创建纯装饰元素 */
+  content: '';
+  /* 设置绝对定位，相对于标题定位 */
+  position: absolute;
+  /* 定位在标题底部 */
+  bottom: 0;
+  /* 定位在标题左侧 */
+  left: 0;
+  /* 设置装饰线宽度 */
+  width: 50px;
+  /* 设置装饰线高度 */
+  height: 2px;
+  /* 设置渐变背景，增强视觉效果 */
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* 分组备注 - 定义分组下方的说明文字样式 */
+.group-note {
+  /* 设置左侧外边距，与标题保持适当距离 */
+  margin-left: 10px;
+  /* 设置字体大小，小于标题，区分层次 */
+  font-size: 0.85em;
+  /* 设置次要文本颜色，区分于主要内容 */
+  color: var(--text-secondary);
+  /* 设置斜体字体，增强视觉区分 */
+  font-style: italic;
+}
+
+/* 页脚 - 定义页面底部区域的样式 */
+footer {
+  /* 文本居中对齐，美观整齐 */
+  text-align: center;
+  /* 设置上下内边距，提供足够的视觉空间 */
+  padding: 2rem 0;
+  /* 设置次要文本颜色，区分于主要内容 */
+  color: var(--text-secondary);
+  /* 设置相对定位，便于控制层叠顺序 */
+  position: relative;
+  /* 设置层叠顺序，确保页脚显示在适当位置 */
+  z-index: 1;
+  /* 将 footer 推到底部 */
+  margin-top: auto;
+}
+
+footer p {
+  margin: 0.5rem 0;
+}
+
+footer a {
+  font-weight: bold;
+  color: inherit;
+  text-decoration: none;
+  transition: none;
+}
+
+
+
+/* 主题切换按钮容器 - 定义主题切换按钮的定位容器 */
+.theme-toggle-container {
+  /* 设置固定定位，相对于视口定位 */
+  position: fixed;
+  /* 定位在视口底部24px处 */
+  bottom: 24px;
+  /* 定位在视口右侧24px处 */
+  right: 24px;
+  /* 设置较高的层叠顺序，确保按钮始终可见 */
+  z-index: 1000;
+}
+
+/* 主题切换按钮 - 定义主题切换按钮的样式 */
+.theme-toggle {
+  /* 设置半透明背景，与整体设计协调 */
+  background: rgba(255, 255, 255, 0.1);
+  /* 移除边框，保持按钮外观简洁 */
+  border: none;
+  /* 设置文本颜色为白色，确保在深色背景上可见 */
+  color: white;
+  /* 设置字体大小，适合图标显示 */
+  font-size: 1.2rem;
+  /* 设置内边距，提供足够的点击区域 */
+  padding: 12px;
+  /* 设置按钮宽度 */
+  width: 48px;
+  /* 设置按钮高度 */
+  height: 48px;
+  /* 设置圆形边框，创建圆形按钮 */
+  border-radius: 50%;
+  /* 设置鼠标指针为手型，提示可点击 */
+  cursor: pointer;
+  /* 设置过渡效果，使交互更加平滑 */
+  transition: all var(--transition-time) ease;
+  /* 添加模糊效果，增强视觉层次感 */
+  backdrop-filter: blur(6px);
+  /* 为Safari浏览器添加前缀，确保跨浏览器兼容性 */
+  -webkit-backdrop-filter: blur(6px);
+  /* 添加阴影效果，增强立体感 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* 使用弹性布局，便于内容居中 */
+  display: flex;
+  /* 垂直居中对齐内容 */
+  align-items: center;
+  /* 水平居中对齐内容 */
+  justify-content: center;
+}
+
+/* 主题切换按钮悬停效果 */
+.theme-toggle:hover {
+  /* 悬停时背景色变亮，增强交互反馈 */
+  background: rgba(255, 255, 255, 0.2);
+  /* 悬停时放大按钮，创造轻微的放大效果 */
+  transform: scale(1.1);
+}
+
+/* 白天模式 - 定义浅色主题的颜色变量和样式 */
+.light-mode {
+  /* 设置浅色背景色，替换深色背景 */
+  --bg-dark: #f4f4f4;
+  /* 设置深色主要文本颜色，提高在浅色背景上的可读性 */
+  --text-primary: #333;
+  /* 设置中等深度的次要文本颜色，区分于主要文本 */
+  --text-secondary: #666;
+  /* 设置几乎不透明的白色卡片背景，增强内容可读性 */
+  --card-bg: rgba(255, 255, 255, 0.98);
+  /* 设置轻微的黑色悬停背景，在浅色主题中提供适当的交互反馈 */
+  --hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+/* 白天模式下的页面背景图片 */
+.light-mode body {
+  /* 使用日间背景图片变量，替换夜间图片 */
+  background-image: var(--bg-image-day);
+}
+
+/* 白天模式下链接项悬停边框颜色 */
+.light-mode .link-item:hover {
+  /* 设置轻微的黑色边框，增强视觉反馈 */
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 白天模式下主题切换按钮样式 */
+.light-mode .theme-toggle {
+  /* 设置半透明黑色背景，与浅色主题协调 */
+  background: rgba(0, 0, 0, 0.1);
+  /* 设置深色文本颜色，确保在浅色背景上可见 */
+  color: #333;
+}
+
+/* 白天模式下主题切换按钮悬停效果 */
+.light-mode .theme-toggle:hover {
+  /* 悬停时增加背景不透明度，增强交互反馈 */
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* 响应式设计 - 针对小屏幕设备的样式调整 */
+@media (max-width: 768px) {
+  /* 减小主标题字体大小，适应小屏幕 */
+  h1 {
+    font-size: 2rem;
+  }
+
+  /* 当前时间字体调整 */
+  #currentDateTime {
+    font-size: 2rem;
+  }
+
+  /* 停留时间字体调整 */
+  #timeSpent {
+    font-size: 2rem;
+  }
+
+  /* 将分组容器改为单列布局，适应小屏幕宽度 */
+  .groups-container {
+    grid-template-columns: 1fr;
+  }
+
+  /* 调整链接网格的列宽，确保在小屏幕上有合适的大小 */
+  .links {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  /* 调整主题切换按钮尺寸和位置，适应小屏幕 */
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    bottom: 15px;
+    right: 15px;
+  }
+}
